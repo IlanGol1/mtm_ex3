@@ -45,7 +45,15 @@ public:
 
 		delete[] elements;
 		delete[] used_positions;
+		delete len;
+		delete cmp;
 	}
+
+	class ArrayIsFullException : std::exception {
+		const char* what() const throw () {
+			return "Array Is Full!";
+		}
+	};
 
 	unsigned int insert(const Element& element) {
 		int i = first_not_used();
@@ -54,6 +62,8 @@ public:
 			return i;
 		}
 		//throw out of bounds error:
+
+		throw new ArrayIsFullException();
 	}
 
 	bool getIndex(const Element& element, unsigned int& index) const {
@@ -94,7 +104,7 @@ public:
 
 		return len;
 	}
-	
+
 	class Filter {
 		virtual bool operator() (const Element&) = 0;
 	};
