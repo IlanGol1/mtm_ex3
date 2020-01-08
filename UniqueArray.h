@@ -4,29 +4,31 @@
 using std::equal_to;
 
 //element needs to have a copy costructor and an assignment operator overload (but an empty constructor is not necessary)
-template <class Element>
-template <class Compare extends equal_to>
+template <class Element, class Compare = equal_to<Element>>
 class UniqueArray{
 
-	int size = 0;
+	int len = 0;
+	Compare cmp;
 
-	Element[] elements;
-	bool[] used_positions;
+	Element elements[];
+	bool used_positions[];
 
 public:
 
-	UniqueArray(unsigned int size) {
+	UniqueArray(unsigned int len) {
 		
-		this.elements = new Element[size];
-		this.used_positions = new bool[size];
+		this.elements = new Element[len];
+		this.used_positions = new bool[len];
 		empty_positions();
 
-		this.size = size;
+		this.len = len;
+		this.cmp = new Compare();
 	}
+
 	UniqueArray(const UniqueArray& other) {
 		
-		this.elements = new Element[other.size];
-		this.used_positions = new bool[other.size];
+		this.elements = new Element[other.len];
+		this.used_positions = new bool[other.len];
 
 		empty_positions();
 
@@ -36,16 +38,18 @@ public:
 				this.elements[i] = new Element(other.elements[i]);
 			}
 		}
-		this.size = other.size;
+		this.len = other.len;
+		this.cmp = new Compare();
 	}
 	~UniqueArray() {
 
 		delete[] elements;
 		delete[] used_positions;
 	}
+
 	unsigned int insert(const Element& element) {
 		int i = first_not_used();
-		if (i != size) {
+		if (i != len) {
 			this.elements[i] = new Element(element);
 			return i;
 		}
@@ -53,8 +57,9 @@ public:
 	}
 
 	bool getIndex(const Element& element, unsigned int& index) const {
-		for (int i = 0; i < size; i++) {
-			if (used_positions[i]) if (Compare(element, elments[i])) { index = i; return true; }
+		
+		for (int i = 0; i < len; i++) {
+			if (used_positions[i]) if (cmp(element, elements[i])) { index = i; return true; }
 		}
 		return false;
 	}
@@ -80,15 +85,19 @@ public:
 	unsigned int count() const {
 		
 		int count = 0;
-		for (int i = 0; i < size; i++) if (used_positions[i]) count++;
+		for (int i = 0; i < len; i++) if (used_positions[i]) count++;
 
 		return count;
 	}
 
 	unsigned int size() const {
 
-		return size;
+		return len;
 	}
+	
+	class Filter {
+		virtual bool operator() (const Element&) = 0;
+	};
 
 	UniqueArray<Element, Compare> filter(const Filter& f) const {
 		UniqueArray<Element, Compare> res = new UniqueArray<Element, Compare>(*this);
@@ -104,9 +113,6 @@ public:
 		return res;
 	}
 
-	class Filter {
-		virtual bool operator() (const Element&) = 0;
-	};
 private:
 	inline void empty_positions( ) {
 
@@ -114,8 +120,9 @@ private:
 	}
 
 	inline int first_not_used() {
+		
 		for (int i = 0; i < this.size; i++) if (!this.used_positions[i]) return i;
-		return this.size;
+		return this.len;
 	}	
 
 };
