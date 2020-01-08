@@ -56,13 +56,17 @@ public:
 	};
 
 	unsigned int insert(const Element& element) {
+		
+		int index = 0;
+		if(getIndex(element, index)) return index;
+		
 		int i = first_not_used();
 		if (i != len) {
 			this.elements[i] = new Element(element);
 			return i;
 		}
-		//throw out of bounds error:
 
+		//throw out of bounds error:
 		throw new ArrayIsFullException();
 	}
 
