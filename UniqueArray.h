@@ -3,6 +3,12 @@
 
 template <class Element, class Compare = std::equal_to<Element>>
 class UniqueArray {
+
+	int len = 0;
+	Compare cmp;
+	Element elements[];
+	bool used_positions[];
+
 public:
 
     UniqueArray(unsigned int size);
