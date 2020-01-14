@@ -1,142 +1,129 @@
-#include <vector>
-#include <iostream>
-
-using std::equal_to;
-
-//element needs to have a copy costructor and an assignment operator overload (but an empty constructor is not necessary)
-template <class Element, class Compare = equal_to<Element>>
-class UniqueArray{
-
-	int len = 0;
-	Compare cmp;
-
-	Element elements[];
-	bool used_positions[];
-
+template <class Element, class Compare = std::equal_to<Element>>
+class UniqueArray {
+    int len = 0;
+    Compare cmp;
+    Element elements[];
+    bool used_positions[];
 public:
 
-	UniqueArray(unsigned int len) {
-		
-		this.elements = new Element[len];
-		this.used_positions = new bool[len];
-		empty_positions();
+    UniqueArray(unsigned int size);
+    UniqueArray(const UniqueArray& other);
+    ~UniqueArray();
+    UniqueArray& operator=(const UniqueArray&) = delete;
+    unsigned int insert(const Element& element);
+    bool getIndex(const Element& element, unsigned int& index) const;
+    const Element* operator[] (const Element& element) const;
+    bool remove(const Element& element);
+    unsigned int getCount() const;
+    unsigned int getSize() const;
 
-		this.len = len;
-		this.cmp = new Compare();
-	}
+    class Filter {
+    public:
+        virtual bool operator() (const Element&) const = 0;
+    };
+    UniqueArray filter(const Filter& f) const;
 
-	UniqueArray(const UniqueArray& other) {
-		
-		this.elements = new Element[other.len];
-		this.used_positions = new bool[other.len];
-
-		empty_positions();
-
-		for(int i = 0; i < other.size; i++) {			
-			if (other.used_positions[i]) {
-				this.used_positions[i] = true;
-				this.elements[i] = new Element(other.elements[i]);
-			}
-		}
-		this.len = other.len;
-		this.cmp = new Compare();
-	}
-	~UniqueArray() {
-
-		delete[] elements;
-		delete[] used_positions;
-		delete len;
-		delete cmp;
-	}
-
-	class ArrayIsFullException : std::exception {
-		const char* what() const throw () {
-			return "Array Is Full!";
-		}
-	};
-
-	unsigned int insert(const Element& element) {
-		
-		int index = 0;
-		if(getIndex(element, index)) return index;
-		
-		int i = first_not_used();
-		if (i != len) {
-			this.elements[i] = new Element(element);
-			return i;
-		}
-
-		//throw out of bounds error:
-		throw new ArrayIsFullException();
-	}
-
-	bool getIndex(const Element& element, unsigned int& index) const {
-		
-		for (int i = 0; i < len; i++) {
-			if (used_positions[i]) if (cmp(element, elements[i])) { index = i; return true; }
-		}
-		return false;
-	}
-
-	const Element* operator[] (const Element& element) const{
-
-		unsigned int index = 0;
-		if (!getIndex(element, index)) return NULL;
-
-		return this.elements + index;
-	}
-
-	bool remove(const Element& element) {
-		unsigned int index = 0;
-		
-		if (!getIndex(element, index)) return false;
-		delete elements[index];
-		used_positions[index] = false;
-
-		return true;
-	}
-
-	unsigned int count() const {
-		
-		int count = 0;
-		for (int i = 0; i < len; i++) if (used_positions[i]) count++;
-
-		return count;
-	}
-
-	unsigned int size() const {
-
-		return len;
-	}
-
-	class Filter {
-		virtual bool operator() (const Element&) = 0;
-	};
-
-	UniqueArray<Element, Compare> filter(const Filter& f) const {
-		UniqueArray<Element, Compare> res = new UniqueArray<Element, Compare>(*this);
-		for (int i = 0; i < size; i++) {
-			
-			if (used_positions[i]) if (!f(elements[i])) {
-				
-				delete res.elements[i];
-				res.used_positions[i] = false;
-			}
-		}
-
-		return res;
-	}
-
-private:
-	inline void empty_positions( ) {
-
-		for (int i = 0; i < this.size; i++) this.used_positions[i] = false;
-	}
-
-	inline int first_not_used() {
-		
-		for (int i = 0; i < this.size; i++) if (!this.used_positions[i]) return i;
-		return this.len;
-	}	
+    class UniqueArrayIsFullException{};
 
 };
+
+template <class Element, class Compare>
+UniqueArray<Element, Compare>::UniqueArray(unsigned int size) :
+	len(size),
+	elements(new Element[size]),
+	used_positions(bool[size] = { false }),
+	cmp(new Compare()) { 
+}
+
+template <class Element, class Compare>
+UniqueArray<Element,Compare>::UniqueArray(const UniqueArray& other) :
+    len(other.getSize()),
+    elements(new Element[other.getSize()]),
+    used_positions(bool [other.getSize()] = {false}),
+    cmp(new Compare()) ; {
+        for(int i = 0; i < other.getSize(); i++) {
+            if (other.used_positions[i]) {
+                this.used_positions[i] = true;
+                this.elements[i] = new Element(other.elements[i]);
+            }
+        }
+}
+
+template <class Element, class Compare>
+UniqueArray<Element,Compare>::~UniqueArray() {
+    delete[] elements;
+    delete cmp;
+}
+
+template <class Element, class Compare>
+unsigned int UniqueArray<Element,Compare>::insert(const Element& element) {
+    int index = 0;
+    if(getIndex(element, index)) {
+        return index;
+    }
+    for (index=0 ; index< len && !used_positions[index] ; index++) ;
+    if (index == len) {
+        throw ArrayIsFullException();
+    }
+    this->elements[index] = new Element(element);
+    used_positions[index] = true;
+    return index;
+}
+
+template <class Element, class Compare>
+bool UniqueArray<Element,Compare>::getIndex(const Element& element, unsigned int& index) const {
+    for (int i = 0; i < len ; ++i) {
+        if (used_positions[i] && cmp(element,elements[i])) {
+            index = i;
+            return true;
+        }
+    }
+    return false;
+}
+
+template <class Element, class Compare>
+const Element* UniqueArray<Element,Compare>::operator[] (const Element& element) const {
+    unsigned int index = 0;
+    if (!getIndex(element,index)) {
+        return NULL;
+    }
+    return elements[index];
+}
+
+template <class Element, class Compare>
+bool UniqueArray<Element,Compare>::remove(const Element& element) {
+    unsigned int index = 0;
+    if (!getIndex(element,index)) {
+        return false;
+    }
+    delete elements[index];
+    used_positions[index] = false;
+    return true;
+}
+
+template <class Element, class Compare>
+unsigned int UniqueArray<Element,Compare>::getCount() const {
+    int count = 0;
+    for (int i = 0; i < len; i++) {
+        if (used_positions[i]) {
+            count++;
+        }
+    }
+    return count;
+}
+
+template <class Element, class Compare>
+unsigned int <Element,Compare>::getSize() const {
+    return  len;
+}
+
+template <class Element, class Compare>
+UniqueArray<Element,Compare>& UniqueArray<Element,Compare>::filter(const Filter& f) const {
+    UniqueArray filter_array = new UniqueArray<Element,Compare>(*this);
+    for (int i = 0; i < len; ++i) {
+        if (used_positions[i] && !f(elements[i])) {
+            filter_array.remove(elements[i]);
+        }
+    }
+	return filterArray;
+}
