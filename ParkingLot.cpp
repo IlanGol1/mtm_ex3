@@ -186,7 +186,7 @@ public:
 		inspection_t = inspection;
 	}
 
-	virtual bool operator() (const Vehicle& vehicle) const {
+	virtual bool operator() (const Vehicle& vehicle) {
 		
 		return vehicle.inspect(inspection_t);
 	}
