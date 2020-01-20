@@ -188,10 +188,9 @@ void ParkingLot::inspectParkingLot(Time inspectionTime) {
 
 	unsigned int count = 0;
 
-	inspect_filter filter(inspectionTime);
-	count += inspect(filter, motorbikes);
-	count += inspect(filter, private_cars);
-	count += inspect(filter, handicapped_cars);
+	count += inspect(inspectionTime, motorbikes);
+	count += inspect(inspectionTime, private_cars);
+	count += inspect(inspectionTime, handicapped_cars);
 
 	ParkingLotPrinter::printInspectionResult(std::cout, inspectionTime, count);
 }

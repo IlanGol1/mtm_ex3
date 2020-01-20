@@ -27,7 +27,7 @@ public:
 	bool wasFined() const;
 
 	bool operator==(const Vehicle& vehicleB) const;
-	ostream& operator<<(ostream& os) const;
+	std::ostream& operator<<(std::ostream& os) const;
 
 private:
 	bool fine();

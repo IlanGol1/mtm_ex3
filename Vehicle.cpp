@@ -1,7 +1,6 @@
 #include "Vehicle.h"
 #include "ParkingLotTypes.h"
 #include "ParkingLotPrinter.h"
-#include "assert.h"
 
 Vehicle::Vehicle(VehicleType type_sand,
                  LicensePlate plate_sand,
@@ -28,7 +27,7 @@ bool Vehicle::operator==(const Vehicle& vehicleB) const{
     return this->plate == vehicleB.plate;
 }
 
-ostream& Vehicle::operator<<(ostream& os) const{
+std::ostream& Vehicle::operator<<(std::ostream& os) const{
 	return ParkingLotUtils::ParkingLotPrinter::printVehicle(os, this->type, this->plate, this->entrance);
 }
 
