@@ -24,12 +24,12 @@ VehicleType Vehicle::typeOfVehicle() const{
     return type;
 }
 
-bool Vehicle::operator==(const Vehicle& vehicleA, const Vehicle& vehicleB){
-    return vehicleA.plate == vehicleB.plate;
+bool Vehicle::operator==(const Vehicle& vehicleB){
+    return this->plate == vehicleB.plate;
 }
 
-ostream& Vehicle::operator<<(ostream& os, const Vehicle& vehicle) {
-	return ParkingLotUtils::ParkingLotPrinter::printVehicle(os, vehicle.type, vehicle.plate, vehicle.entrance);
+ostream& Vehicle::operator<<(ostream& os) {
+	return ParkingLotUtils::ParkingLotPrinter::printVehicle(os, this->type, this->plate, this->entrance);
 }
 
 //it's a bit faulty but I haven't found a way around it, since we first need to initialize the Vehicle and then put it in the unique array and give it a spot.
