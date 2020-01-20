@@ -6,6 +6,9 @@
 #include "ParkingSpot.h"
 #include "Vehicle.h"
 #include "UniqueArray.h"
+#include <map>
+#include <algorithm>
+
 
 using namespace ParkingLotUtils;
 using std::ostream;

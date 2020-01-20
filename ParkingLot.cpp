@@ -1,7 +1,4 @@
 #include "ParkingLot.h"
-#include "UniqueArray.h"
-#include <map>
-#include <algorithm>
 
 using namespace MtmParkingLot;
 using namespace ParkingLotUtils;
@@ -240,7 +237,7 @@ inline void copy_and_print(UniqueArray<Vehicle, std::equal_to>& arr) {
 	}
 }
 
-ostream& ParkingLot::operator<<(ostream& os, const ParkingLot& parkingLot) {
+ostream& operator<<(ostream& os, const ParkingLot& parkingLot) {
 
 	ParkingLotPrinter::printParkingLotTitle(os);
 
