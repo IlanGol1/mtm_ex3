@@ -106,8 +106,7 @@ UniqueArray<Element,Compare> UniqueArray<Element,Compare>::filter(const Filter& 
 }
 
 template<class Element, class Compare>
-UniqueArray<Element, Compare>::iterator UniqueArray<Element, Compare>::iterator Itter;
-Itter UniqueArray<Element, Compare>::begin() const {
+UniqueArray<Element, Compare>::iterator UniqueArray<Element, Compare>::begin() const {
 	return elements;
 }
 

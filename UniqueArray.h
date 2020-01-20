@@ -6,7 +6,7 @@ class UniqueArray {
 
 	int len = 0;
 	Compare cmp;
-	Element elements[];
+	Element* elements[];
 	
 public:
 
@@ -30,7 +30,12 @@ public:
     UniqueArray filter(const Filter& f) const;
 
     class UniqueArrayIsFullException{
-	};    
+	};
+
+	typedef Element** iterator;
+
+	iterator begin() const;
+	iterator end() const;
 };
 
 #include "UniqueArrayImp.h"
