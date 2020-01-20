@@ -9,6 +9,7 @@
 using namespace ParkingLotUtils;
 
 class Vehicle {
+
 	VehicleType type;
 	LicensePlate plate;
 	Time entrance;

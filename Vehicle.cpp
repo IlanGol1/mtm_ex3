@@ -7,18 +7,17 @@
 Vehicle::Vehicle(VehicleType type_sand,
                  LicensePlate plate_sand,
                  Time entrance_sand) :
-                 was_fined(false),
                  type(type_sand),
                  plate(plate_sand),
-	entrance(entrance_sand.day, entrance_sand.hour, entrance_sand.minute),
-	spot(){
+	entrance(entrance_sand),
+	spot(), was_fined(false){
 }
 
 Vehicle::Vehicle(const Vehicle& other) :
         was_fined(other.was_fined),
         type(other.type),
         plate(other.plate),
-		entrance(other.entrance.day, other.entrance.hour ,other.entrance.minute){
+		entrance(other.entrance){
 	
 	if (other.spot) this->spot = ParkingSpot(other.spot.getParkingBlock(), other.spot.getParkingNumber());
 }
