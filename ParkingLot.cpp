@@ -15,7 +15,7 @@ ParkingLot::~ParkingLot() {
 	handicapped_cars.~UniqueArray();
 }
 
-inline void entry_attempt(UniqueArray<Vehicle, equal_to>& unique, Vehicle& vehicle) {
+inline void entry_attempt(UniqueArray<Vehicle, equal_to>& unique, Vehicle vehicle) {
 
 	unsigned int i = unique.insert(vehicle);
 
@@ -26,7 +26,7 @@ inline void entry_attempt(UniqueArray<Vehicle, equal_to>& unique, Vehicle& vehic
 	ParkingLotPrinter::printEntrySuccess(std::cout, spot);
 }
 
-inline ParkingResult already_parked(ParkingSpot& spot) {
+inline ParkingResult already_parked(ParkingSpot spot) {
 
 	ParkingLotPrinter::printEntryFailureAlreadyParked(std::cout, spot);
 	return VEHICLE_ALREADY_PARKED;
@@ -50,7 +50,7 @@ ParkingResult ParkingLot::enterParking(VehicleType vehicleType, LicensePlate lic
 			return SUCCESS;
 		}
 	}
-	catch (ArrayIsFullException& exception) {
+	catch (UniqueArray<Vehicle, equal_to>::UniqueArrayIsFullException& exception) {
 
 		//do nothing...
 	}
@@ -71,7 +71,7 @@ ParkingResult ParkingLot::enterParking(VehicleType vehicleType, LicensePlate lic
 			return SUCCESS;
 		}
 	}
-	catch (ArrayIsFullException & exception) {
+	catch (UniqueArray<Vehicle, equal_to>::UniqueArrayIsFullException& exception) {
 		
 		ParkingLotPrinter::printEntryFailureNoSpot(std::cout);
 		return NO_EMPTY_SPOT;
@@ -80,22 +80,24 @@ ParkingResult ParkingLot::enterParking(VehicleType vehicleType, LicensePlate lic
 
 inline unsigned int max(unsigned int first, unsigned int second) {
 
-	if (first >= second) return first;
+	if (first <= second) return first;
 	return second;
 }
 
-inline unsigned int howMuchMoney(VehicleType type, bool was_fined) {
+inline unsigned int howMuchMoney(Vehicle vehicle, Time exit) {
 	
 	//I used a map because I don't like using enums like chars or ints. this is totally unnecessary however.
-	static take<VehicleType, int> = { {MOTORBIKE, 0}, {HANDICAPPED, 1}, {CAR, 2} }
-	static int[3] initial_pay = { 10, 15, 20 };
-	static int[3] extra_pay = { 5, 0, 10 }
+	static std::map<VehicleType, int> take = { {MOTORBIKE, 0}, {HANDICAPPED, 1}, {CAR, 2} }
+	static int initial_pay[3] = { 10, 15, 20 };
+	static int extra_pay[3] = { 5, 0, 10 }
 
 	unsigned int sum = 0;
-	
+	VehicleType type = vehicle.typeOfVehicle();
+	Time::Hour hour = vehicle.timeParking(exit);
+
 	if(hour > 0) sum += initial_pay[take.to(type)];
-	if (hour > 1) sum += extra_charge[take.to(type)] * ( max(hour,6) - 1);
-	if (was_fined) sum += 250;
+	if (hour > 1) sum += extra_charge[take.to(type)] * ( min(hour,6) - 1);
+	if (vehicle.wasFined()) sum += 250;
 
 	return sum;
 }
@@ -103,9 +105,9 @@ inline unsigned int howMuchMoney(VehicleType type, bool was_fined) {
 ParkingResult ParkingLot::exitParking(LicensePlate licensePlate, Time exitTime) {
 	
 	Vehicle dud = Vehicle(HANDICAPPED, licensePlate, Time());
-	Vehicle* vehicle = NULL;
+	const Vehicle* vehicle = NULL;
 	
-	UniqueArray<Vehicle>* temp;
+	UniqueArray<Vehicle, equal_to>* temp;
 
 	if (vehicle = motorbikes[dud]) {
 
@@ -124,7 +126,7 @@ ParkingResult ParkingLot::exitParking(LicensePlate licensePlate, Time exitTime) 
 		return VEHICLE_NOT_FOUND;
 	}
 	
-	unsigned int price = howMuchMoney(vehicle->typeOfVehicle(), vehicle->wasFined());
+	unsigned int price = howMuchMoney(vehicle, exitTime);
 	ParkingLotPrinter::printExitSuccess(std::cout, vehicle->getParkingSpot(), exitTime, price);
 
 	temp->remove(*vehicle);
@@ -159,11 +161,11 @@ ParkingResult ParkingLot::getParkingSpot(LicensePlate licensePlate, ParkingSpot&
 ParkingResult ParkingLot::getParkingSpot(LicensePlate licensePlate, ParkingSpot& parkingSpot) const{
 
 	Vehicle dud = Vehicle(HANDICAPPED, licensePlate, Time());
-	Vehicle* res = NULL;
+	const Vehicle* res = NULL;
 
-	if (res = handicapped_cars[dud]);
-	else if (res = motorbikes[dud]);
-	else if (res = private_cars[dud]);
+	if (res = handicapped_cars[dud]) {}
+	else if (res = motorbikes[dud]) {}
+	else if (res = private_cars[dud]) {}
 	else {
 		return VEHICLE_NOT_FOUND;
 	}
@@ -186,13 +188,13 @@ public:
 
 	virtual bool operator() (const Vehicle& vehicle) const {
 		
-		return vehicle.inspect(time);
+		return vehicle.inspect(inspection_t);
 	}
 };
 
 inline unsigned int copy_and_inspect(inspect_filter& filter, UniqueArray<Vehicle, equal_to>& unique) {
 
-	UniqueArray copy = unique.filter(filter);
+	UniqueArray<Vehicle, equal_to> copy = unique.filter(filter);
 	return copy.getCount();
 }
 
@@ -200,7 +202,7 @@ void ParkingLot::inspectParkingLot(Time inspectionTime) {
 
 	unsigned int count = 0;
 
-	Filter filter = inspect_filter(inspectionTime);
+	inspect_filter filter(inspectionTime);
 	count += copy_and_inspect(filter, motorbikes);
 	count += copy_and_inspect(filter, private_cars);
 	count += copy_and_inspect(filter, handicapped_cars);
@@ -224,7 +226,7 @@ public:
 	};
 };
 
-inline void copy_and_print(UniqueArray<Vehicle, equal_to>& arr) {
+inline void copy_and_print(ostream& os, UniqueArray<Vehicle, equal_to>& arr) {
 
 	UniqueArray<Vehicle, equal_to> copy = UniqueArray<Vehicle, equal_to>(arr);
 	std::sort(copy.begin(), copy.end(), CompareVehiclePointers());
@@ -240,7 +242,7 @@ ostream& operator<<(ostream& os, const ParkingLot& parkingLot) {
 
 	ParkingLotPrinter::printParkingLotTitle(os);
 
-	copy_and_print(motorbikes);
-	copy_and_print(handicapped_cars);
-	copy_and_print(private_cars);
+	copy_and_print(os, parkingLot.motorbikes);
+	copy_and_print(os, parkingLot.handicapped_cars);
+	copy_and_print(os, parkingLot.private_cars);
 }
