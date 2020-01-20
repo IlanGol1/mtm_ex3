@@ -8,6 +8,7 @@
 #include <string>
 #include <map>
 #include <limits>
+#include <stdexcept>
 
 using std::istream;
 using std::ifstream;
