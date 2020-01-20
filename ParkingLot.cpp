@@ -3,11 +3,11 @@
 using namespace MtmParkingLot;
 using namespace ParkingLotUtils;
 
-ParkingLot::ParkingLot(unsigned int parkingBlockSizes[]) {
+ParkingLot::ParkingLot(unsigned int parkingBlockSizes[]):
+	motorbikes(parkingBlockSizes[0]),
+	private_cars(parkingBlockSizes[1]),
+	handicapped_cars(parkingBlockSizes[2]){
 
-	motorobikes = UniqueArray<Vehicle, equal_to>(parkingBlockSizes[0]);
-	private_cars = UniqueArray<Vehicle, equal_to>(parkingBlockSizes[1]);
-	handicapped_cars = UniqueArray<Vehicle, equal_to>(parkingBlockSizes[2]);
 }
 
 ParkingLot::~ParkingLot() {
@@ -16,7 +16,7 @@ ParkingLot::~ParkingLot() {
 	handicapped_cars.~UniqueArray();
 }
 
-inline void entry_attempt(UniqueArray& unique, Vehicle& vehicle) {
+inline void entry_attempt(UniqueArray<Vehicle, euqal_to>& unique, Vehicle& vehicle) {
 
 	unsigned int i = unique.insert(vehicle);
 
