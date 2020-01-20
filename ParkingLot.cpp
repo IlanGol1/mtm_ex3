@@ -196,7 +196,7 @@ public:
 
 inline unsigned int copy_and_inspect(inspect_filter& filter, UniqueArray<Vehicle, std::equal_to>& unique) {
 
-	UniqueArray copy = unique.filter(inspect_filter());
+	UniqueArray copy = unique.filter(filter);
 	return copy.getCount();
 }
 
@@ -211,8 +211,6 @@ void ParkingLot::inspectParkingLot(Time inspectionTime) {
 
 	ParkingLotPrinter::printInspectionResult(std::cout, inspectionTime, count);
 }
-
-//our array is sorted, but we're supposed to sort it. idk dude.
 
 class CompareVehiclePointers {
 	
