@@ -3,6 +3,8 @@
 using namespace MtmParkingLot;
 using namespace ParkingLotUtils;
 
+typedef std::equal_to<Vehicle> equal_to;
+
 ParkingLot::ParkingLot(unsigned int parkingBlockSizes[]):
 	motorbikes(parkingBlockSizes[0]),
 	private_cars(parkingBlockSizes[1]),
