@@ -30,7 +30,7 @@ public:
 	friend ostream& operator<<(ostream& os, Vehicle& vehicle);
 
 private:
-	bool fine();
+	bool fine() const;
 };
 
 #endif

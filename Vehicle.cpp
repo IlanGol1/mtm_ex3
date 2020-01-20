@@ -1,5 +1,4 @@
 #include "Vehicle.h"
-#include "Time.h"
 #include "ParkingLotTypes.h"
 #include "ParkingLotPrinter.h"
 #include "assert.h"
@@ -14,12 +13,11 @@ Vehicle::Vehicle(VehicleType type_sand,
 }
 
 Vehicle::Vehicle(const Vehicle& other) :
-        was_fined(other.was_fined),
         type(other.type),
         plate(other.plate),
-		entrance(other.entrance){
-	
-	if (other.spot) this->spot = ParkingSpot(other.spot.getParkingBlock(), other.spot.getParkingNumber());
+		entrance(other.entrance),
+		spot(other.spot.getParkingBlock(), other.spot.getParkingNumber()),
+		was_fined(other.was_fined){
 }
 
 VehicleType Vehicle::typeOfVehicle() const{
@@ -51,7 +49,7 @@ bool Vehicle::wasFined() const{
 }
 
 //returns true upon a successful fine
-bool Vehicle::fine() {
+bool Vehicle::fine() const{
 	if (was_fined) {
 		return false;
 	}
