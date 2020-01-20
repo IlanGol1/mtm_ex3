@@ -78,25 +78,25 @@ ParkingResult ParkingLot::enterParking(VehicleType vehicleType, LicensePlate lic
 	}
 }
 
-inline unsigned int max(unsigned int first, unsigned int second) {
+inline unsigned int min(unsigned int first, unsigned int second) {
 
 	if (first <= second) return first;
 	return second;
 }
 
-inline unsigned int howMuchMoney(Vehicle vehicle, Time exit) {
+unsigned int howMuchMoney(const Vehicle vehicle, Time exit) {
 	
 	//I used a map because I don't like using enums like chars or ints. this is totally unnecessary however.
-	static std::map<VehicleType, int> take = { {MOTORBIKE, 0}, {HANDICAPPED, 1}, {CAR, 2} }
+	static std::map<VehicleType, int> take = { {MOTORBIKE, 0}, {HANDICAPPED, 1}, {CAR, 2} };
 	static int initial_pay[3] = { 10, 15, 20 };
-	static int extra_pay[3] = { 5, 0, 10 }
+	static int extra_pay[3] = { 5, 0, 10 };
 
-	unsigned int sum = 0;
 	VehicleType type = vehicle.typeOfVehicle();
 	Time::Hour hour = vehicle.timeParking(exit);
+	unsigned int sum = 0;
 
-	if(hour > 0) sum += initial_pay[take.to(type)];
-	if (hour > 1) sum += extra_charge[take.to(type)] * ( min(hour,6) - 1);
+	if(hour > 0) sum += initial_pay[take.at(type)];
+	if (hour > 1) sum += extra_pay[take.at(type)] * ( min(hour,6) - 1);
 	if (vehicle.wasFined()) sum += 250;
 
 	return sum;
@@ -109,15 +109,15 @@ ParkingResult ParkingLot::exitParking(LicensePlate licensePlate, Time exitTime) 
 	
 	UniqueArray<Vehicle, equal_to>* temp;
 
-	if (vehicle = motorbikes[dud]) {
+	if (vehicle = motorbikes[dud] != NULL) { //compilation problems : suggests parenthesis.
 
 		temp = &motorbikes;
 	}
-	else if(vehicle = private_cars[dud]){
+	else if(vehicle = private_cars[dud] != NULL){
 
 		temp = &private_cars;
 	}
-	else if (vehicle = handicapped_cars[dud]) {
+	else if (vehicle = handicapped_cars[dud] != NULL) {
 
 		temp = &handicapped_cars;
 	}else {
@@ -163,9 +163,9 @@ ParkingResult ParkingLot::getParkingSpot(LicensePlate licensePlate, ParkingSpot&
 	Vehicle dud = Vehicle(HANDICAPPED, licensePlate, Time());
 	const Vehicle* res = NULL;
 
-	if (res = handicapped_cars[dud]) {}
-	else if (res = motorbikes[dud]) {}
-	else if (res = private_cars[dud]) {}
+	if (res = handicapped_cars[dud] != NULL);
+	else if (res = motorbikes[dud] != NULL);
+	else if (res = private_cars[dud] != NULL);
 	else {
 		return VEHICLE_NOT_FOUND;
 	}
@@ -194,7 +194,7 @@ public:
 
 inline unsigned int copy_and_inspect(inspect_filter& filter, UniqueArray<Vehicle, equal_to>& unique) {
 
-	UniqueArray<Vehicle, equal_to> copy = unique.filter(filter);
+	UniqueArray<Vehicle, equal_to> copy = unique.filter((UniqueArray<Vehicle, equal_to>::Filter)filter);
 	return copy.getCount();
 }
 

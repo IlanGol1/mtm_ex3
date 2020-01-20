@@ -43,7 +43,7 @@ void Vehicle::setParkingSpot(ParkingSpot& p) {
 	spot = ParkingSpot(p.getParkingBlock(), p.getParkingNumber());
 }
 
-ParkingSpot Vehicle::getParkingSpot() {
+ParkingSpot Vehicle::getParkingSpot() const {
 	return spot;
 }
 
