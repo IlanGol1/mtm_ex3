@@ -24,11 +24,11 @@ VehicleType Vehicle::typeOfVehicle() const{
     return type;
 }
 
-bool operator==(const Vehicle& vehicleA, const Vehicle& vehicleB){
+friend bool operator==(const Vehicle& vehicleA, const Vehicle& vehicleB){
     return vehicleA.plate == vehicleB.plate;
 }
 
-ostream& operator<<(ostream& os, const Vehicle& vehicle) {
+friend ostream& operator<<(ostream& os, const Vehicle& vehicle) {
 	return ParkingLotUtils::ParkingLotPrinter::printVehicle(os, vehicle.type, vehicle.plate, vehicle.entrance);
 }
 
@@ -49,7 +49,7 @@ bool Vehicle::wasFined() const{
 }
 
 //returns true upon a successful fine
-bool Vehicle::fine() const{
+bool Vehicle::fine(){
 	if (was_fined) {
 		return false;
 	}
@@ -57,12 +57,12 @@ bool Vehicle::fine() const{
 	return true;
 }
 
-Time::Hour Vehicle::timeParking(Time exit_time) const{
+double Vehicle::timeParking(Time exit_time) const{
 	Time tmp = exit_time - entrance;
 	return tmp.toHours();
 }
 
-bool Vehicle::inspect(Time inspection_time) const{
+bool Vehicle::inspect(Time inspection_time){
 	if (timeParking(inspection_time) > 24) return fine();
 	return false;
 }

@@ -17,7 +17,7 @@ class Vehicle {
 	bool was_fined;
 	
 public:
-    bool inspect(Time inspection_time) const;
+    bool inspect(Time inspection_time);
     Vehicle (VehicleType type, LicensePlate plate, Time entrance);
     Vehicle(const Vehicle& other);
     VehicleType typeOfVehicle() const;
@@ -30,7 +30,7 @@ public:
 	friend ostream& operator<<(ostream& os, Vehicle& vehicle);
 
 private:
-	bool fine() const;
+	bool fine();
 };
 
 #endif
