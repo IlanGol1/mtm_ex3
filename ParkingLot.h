@@ -8,7 +8,7 @@
 #include "UniqueArray.h"
 #include <map>
 #include <algorithm>
-
+#include <functional>
 
 using namespace ParkingLotUtils;
 using std::ostream;
