@@ -3,8 +3,6 @@
 using namespace MtmParkingLot;
 using namespace ParkingLotUtils;
 
-typedef std::equal_to<Vehicle> equal_to;
-
 ParkingLot::ParkingLot(unsigned int parkingBlockSizes[]):
 	motorbikes(parkingBlockSizes[0]),
 	private_cars(parkingBlockSizes[1]),
@@ -17,7 +15,7 @@ ParkingLot::~ParkingLot() {
 	handicapped_cars.~UniqueArray();
 }
 
-inline void entry_attempt(UniqueArray<Vehicle, euqal_to>& unique, Vehicle& vehicle) {
+inline void entry_attempt(UniqueArray<Vehicle, equal_to>& unique, Vehicle& vehicle) {
 
 	unsigned int i = unique.insert(vehicle);
 
