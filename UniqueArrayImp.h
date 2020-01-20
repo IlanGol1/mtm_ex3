@@ -1,10 +1,12 @@
-#include "UniqueArray.h"
+#ifndef UniqueArrayImp_H
+
+#define UniqueArrayImp_H
 
 template <class Element, class Compare>
 UniqueArray<Element, Compare>::UniqueArray(unsigned int size) :
 	len(size),
 	elements(new Element[size]),
-	used_positions(bool[size] = { false }),
+	used_positions(new bool[size] = { false }),
 	cmp(new Compare()) { 
 }
 
@@ -12,8 +14,8 @@ template <class Element, class Compare>
 UniqueArray<Element,Compare>::UniqueArray(const UniqueArray& other) :
     len(other.getSize()),
     elements(new Element[other.getSize()]),
-    used_positions(bool [other.getSize()] = {false}),
-    cmp(new Compare()) ; {
+    used_positions(new bool [other.getSize()] = {false}),
+    cmp(new Compare()) {
         for(int i = 0; i < other.getSize(); i++) {
             if (other.used_positions[i]) {
                 this.used_positions[i] = true;
@@ -24,8 +26,10 @@ UniqueArray<Element,Compare>::UniqueArray(const UniqueArray& other) :
 
 template <class Element, class Compare>
 UniqueArray<Element,Compare>::~UniqueArray() {
-    delete[] elements;
+	for (int i = 0; i < len; i++) if(elements[i]) delete elements[i];
+	delete[] elements;
     delete cmp;
+	delete[] used_positions;
 }
 
 template <class Element, class Compare>
@@ -36,7 +40,7 @@ unsigned int UniqueArray<Element,Compare>::insert(const Element& element) {
     }
     for (index=0 ; index< len && !used_positions[index] ; index++) ;
     if (index == len) {
-        throw ArrayIsFullException();
+        throw new ArrayIsFullException();
     }
     this->elements[index] = new Element(element);
     used_positions[index] = true;
@@ -86,7 +90,7 @@ unsigned int UniqueArray<Element,Compare>::getCount() const {
 }
 
 template <class Element, class Compare>
-unsigned int <Element,Compare>::getSize() const {
+unsigned int UniqueArray<Element,Compare>::getSize() const {
     return  len;
 }
 
@@ -100,3 +104,5 @@ UniqueArray<Element,Compare>& UniqueArray<Element,Compare>::filter(const Filter&
     }
 	return filterArray;
 }
+
+#endif

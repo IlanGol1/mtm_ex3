@@ -22,8 +22,10 @@ public:
     unsigned int getCount() const;
     unsigned int getSize() const;
 
-    class Filter {
-    public:
+	typedef Element* Index;
+	
+	class Filter {
+	public:
         virtual bool operator() (const Element&) const = 0;
     };
     UniqueArray filter(const Filter& f) const;
