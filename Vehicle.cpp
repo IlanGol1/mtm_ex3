@@ -24,11 +24,11 @@ VehicleType Vehicle::typeOfVehicle() const{
     return type;
 }
 
-friend bool operator==(const Vehicle& vehicleA, const Vehicle& vehicleB){
+bool Vehicle::operator==(const Vehicle& vehicleA, const Vehicle& vehicleB){
     return vehicleA.plate == vehicleB.plate;
 }
 
-friend ostream& operator<<(ostream& os, const Vehicle& vehicle) {
+ostream& Vehicle::operator<<(ostream& os, const Vehicle& vehicle) {
 	return ParkingLotUtils::ParkingLotPrinter::printVehicle(os, vehicle.type, vehicle.plate, vehicle.entrance);
 }
 
