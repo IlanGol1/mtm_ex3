@@ -109,15 +109,15 @@ ParkingResult ParkingLot::exitParking(LicensePlate licensePlate, Time exitTime) 
 	
 	UniqueArray<Vehicle, equal_to>* temp;
 
-	if (vehicle = motorbikes[dud] != NULL) { //compilation problems : suggests parenthesis.
+	if ((vehicle = motorbikes[dud]) != NULL) { //compilation problems : suggests parenthesis.
 
 		temp = &motorbikes;
 	}
-	else if(vehicle = private_cars[dud] != NULL){
+	else if((vehicle = private_cars[dud]) != NULL){
 
 		temp = &private_cars;
 	}
-	else if (vehicle = handicapped_cars[dud] != NULL) {
+	else if ((vehicle = handicapped_cars[dud]) != NULL) {
 
 		temp = &handicapped_cars;
 	}else {
@@ -163,9 +163,9 @@ ParkingResult ParkingLot::getParkingSpot(LicensePlate licensePlate, ParkingSpot&
 	Vehicle dud = Vehicle(HANDICAPPED, licensePlate, Time());
 	const Vehicle* res = NULL;
 
-	if (res = handicapped_cars[dud] != NULL);
-	else if (res = motorbikes[dud] != NULL);
-	else if (res = private_cars[dud] != NULL);
+	if ((res = handicapped_cars[dud]) != NULL);
+	else if ((res = motorbikes[dud]) != NULL);
+	else if ((res = private_cars[dud]) != NULL);
 	else {
 		return VEHICLE_NOT_FOUND;
 	}
@@ -175,7 +175,7 @@ ParkingResult ParkingLot::getParkingSpot(LicensePlate licensePlate, ParkingSpot&
 }
 
 
-class inspect_filter : UniqueArray<Vehicle, equal_to>::Filter {
+class inspect_filter : public UniqueArray<Vehicle, equal_to>::Filter {
 	
 	Time inspection_t;
 
@@ -245,4 +245,6 @@ ostream& operator<<(ostream& os, const ParkingLot& parkingLot) {
 	copy_and_print(os, parkingLot.motorbikes);
 	copy_and_print(os, parkingLot.handicapped_cars);
 	copy_and_print(os, parkingLot.private_cars);
+
+	return os;
 }

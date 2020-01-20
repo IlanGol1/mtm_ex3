@@ -23,7 +23,7 @@ Vehicle::Vehicle(const Vehicle& other) :
 	if (other.spot) this->spot = ParkingSpot(other.spot.getParkingBlock(), other.spot.getParkingNumber());
 }
 
-VehicleType Vehicle::typeOfVehicle(){
+VehicleType Vehicle::typeOfVehicle() const{
     return type;
 }
 
@@ -47,7 +47,7 @@ ParkingSpot Vehicle::getParkingSpot() const {
 	return spot;
 }
 
-bool Vehicle::wasFined() {
+bool Vehicle::wasFined() const{
 	return was_fined;
 }
 
@@ -60,12 +60,12 @@ bool Vehicle::fine() {
 	return true;
 }
 
-Time::Hour Vehicle::timeParking(Time exit_time) {
+Time::Hour Vehicle::timeParking(Time exit_time) const{
 	Time tmp = exit_time - entrance;
 	return tmp.toHours();
 }
 
-bool Vehicle::inspect(Time inspection_time) {
+bool Vehicle::inspect(Time inspection_time) const{
 	if (timeParking(inspection_time) > 24) return fine();
 	return false;
 }

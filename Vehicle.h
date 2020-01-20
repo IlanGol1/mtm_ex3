@@ -16,14 +16,14 @@ class Vehicle {
 	bool was_fined;
 	
 public:
-    bool inspect(Time inspection_time);
+    bool inspect(Time inspection_time) const;
     Vehicle (VehicleType type, LicensePlate plate, Time entrance);
     Vehicle(const Vehicle& other);
-    VehicleType typeOfVehicle();
-    double timeParking(Time exit_time);
+    VehicleType typeOfVehicle() const;
+    double timeParking(Time exit_time) const;
 	void setParkingSpot(ParkingSpot& p);
 	ParkingSpot getParkingSpot() const;
-	bool wasFined();
+	bool wasFined() const;
 
 	friend bool operator==(const Vehicle& vehicleA, const Vehicle& vehicleB);
 	friend ostream& operator<<(ostream& os, Vehicle& vehicle);
