@@ -1,5 +1,6 @@
 #include "ParkingLot.h"
 #include "UniqueArray.h"
+#include <map>
 
 using namespace MtmParkingLot;
 using namespace ParkingLotUtils;
@@ -16,7 +17,6 @@ ParkingLot::~ParkingLot() {
 	private_cars.~UniqueArray();
 	handicapped_cars.~UniqueArray();
 }
-
 
 inline void entry_attempt(UniqueArray& unique, Vehicle& vehicle) {
 
@@ -87,12 +87,17 @@ inline unsigned int max(unsigned int first, unsigned int second) {
 	return second;
 }
 
-inline unsigned int howMuchMoney(unsigned int hour, unsigned int initial_pay, unsigned int extra_charge, bool was_fined) {
+inline unsigned int howMuchMoney(VehicleType type, bool was_fined) {
 	
+	//I used a map because I don't like using enums like chars or ints. this is totally unnecessary however. (for my partner - they used maps at MtmParkingLot.cpp).
+	static take<VehicleType, int> = { {MOTORBIKE, 0}, {HANDICAPPED, 1}, {CAR, 2} }
+	static int[3] initial_pay = { 10, 15, 20 };
+	static int[3] extra_pay = { 5, 0, 10 }
+
 	unsigned int sum = 0;
 	
-	if(hour > 0) sum += initial_pay;
-	if (hour > 1) sum += extra_charge * ( max(hour,6) - 1);
+	if(hour > 0) sum += initial_pay[take.to(type)];
+	if (hour > 1) sum += extra_charge[take.to(type)] * ( max(hour,6) - 1);
 	if (was_fined) sum += 250;
 
 	return sum;
@@ -105,15 +110,15 @@ ParkingResult ParkingLot::exitParking(LicensePlate licensePlate, Time exitTime) 
 	
 	UniqueArray<Vehicle>* temp;
 
-	if (temp = motorbikes[dud]) {
+	if (vehicle = motorbikes[dud]) {
 
 		temp = &motorbikes;
 	}
-	else if(temp = private_cars[dud]){
+	else if(vehicle = private_cars[dud]){
 
 		temp = &private_cars;
 	}
-	else if (temp = handicapped_cars[dud]) {
+	else if (vehicle = handicapped_cars[dud]) {
 
 		temp = &handicapped_cars;
 	}else {
@@ -121,14 +126,11 @@ ParkingResult ParkingLot::exitParking(LicensePlate licensePlate, Time exitTime) 
 		ParkingLotPrinter::printExitFailure(std::cout, licensePlate);
 		return VEHICLE_NOT_FOUND;
 	}
-
-
-	unsigned int price = howMuchMoney(vehicle->timeParking(exitTime), 10, 5, vehicle->wasFined());
-	ParkingSpot parkingSpot = vehicle->getParkingSpot();
+	
+	unsigned int price = howMuchMoney(vehicle->typeOfVehicle(), vehicle->wasFined());
+	ParkingLotPrinter::printExitSuccess(std::cout, vehicle->getParkingSpot(), exitTime, price);
 
 	temp->remove(*vehicle);
-	
-	ParkingLotPrinter::printExitSuccess(std::cout, parkingSpot, exitTime, price);
 	return SUCCESS;
 }
 

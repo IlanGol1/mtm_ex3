@@ -1,14 +1,13 @@
 #ifndef MTMPARKINGLOT_UNIQUEARRAY_H
 #define MTMPARKINGLOT_UNIQUEARRAY_H
 
-template <class Element, class Compare = std::equal_to<Element>>
+template <class Element, class Compare>
 class UniqueArray {
 
 	int len = 0;
 	Compare cmp;
 	Element elements[];
-	bool used_positions[];
-
+	
 public:
 
     UniqueArray(unsigned int size);
@@ -30,7 +29,8 @@ public:
     };
     UniqueArray filter(const Filter& f) const;
 
-    class UniqueArrayIsFullException{};    
+    class UniqueArrayIsFullException{
+	};    
 };
 
 #include "UniqueArrayImp.h"

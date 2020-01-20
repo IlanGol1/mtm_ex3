@@ -19,6 +19,10 @@ public:
     bool inspect(Time inspection_time);
     Vehicle (VehicleType type, LicensePlate plate, Time entrance);
     Vehicle(const Vehicle& other);
+	
+	~Vehicle();
+	Vehicle operator=(Vehicle& other);
+
     VehicleType typeOfVehicle();
     double timeParking(Time exit_time);
 	void setParkingSpot(ParkingSpot& p);
