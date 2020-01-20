@@ -26,8 +26,8 @@ public:
 	ParkingSpot getParkingSpot() const;
 	bool wasFined() const;
 
-	friend bool operator==(const Vehicle& vehicleB);
-	friend ostream& operator<<(ostream& os);
+	bool operator==(const Vehicle& vehicleB);
+	ostream& operator<<(ostream& os);
 
 private:
 	bool fine();
