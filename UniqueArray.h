@@ -6,7 +6,7 @@ class UniqueArray {
 
 	int len = 0;
 	Compare cmp;
-	Element* elements[];
+	Element** elements;
 	
 public:
 
@@ -21,8 +21,6 @@ public:
     unsigned int getCount() const;
     unsigned int getSize() const;
 
-	typedef Element* Index;
-	
 	class Filter {
 	public:
         virtual bool operator() (const Element&) const = 0;
@@ -34,8 +32,12 @@ public:
 
 	typedef Element** iterator;
 
-	iterator begin() const;
-	iterator end() const;
+	iterator begin() const {
+		return elements;
+	}
+	iterator end() const {
+		return elements + len;
+	}
 };
 
 #include "UniqueArrayImp.h"
