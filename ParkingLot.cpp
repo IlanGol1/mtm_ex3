@@ -174,28 +174,14 @@ ParkingResult ParkingLot::getParkingSpot(LicensePlate licensePlate, ParkingSpot&
 	return SUCCESS;
 }
 
+//first we used filter, but it's const so it's useless (if we want to change the was_fined bool).
+inline unsigned int inspect(Time inspection_time, UniqueArray<Vehicle, equal_to>& unique) {
 
-class inspect_filter : public UniqueArray<Vehicle, equal_to>::Filter {
-	
-	Time inspection_t;
-
-public:
-	
-	inspect_filter(Time inspection) {
-
-		inspection_t = inspection;
+	unsigned int count = 0;
+	for (Vehicle* vehicle : unique) {
+		if (vehicle->inspect(inspection_time)) count++;
 	}
-
-	virtual bool operator() (const Vehicle& vehicle) {
-		
-		return vehicle.inspect(inspection_t);
-	}
-};
-
-inline unsigned int copy_and_inspect(inspect_filter& filter, UniqueArray<Vehicle, equal_to>& unique) {
-
-	UniqueArray<Vehicle, equal_to> copy = unique.filter(filter);
-	return copy.getCount();
+	return count;
 }
 
 void ParkingLot::inspectParkingLot(Time inspectionTime) {
@@ -203,9 +189,9 @@ void ParkingLot::inspectParkingLot(Time inspectionTime) {
 	unsigned int count = 0;
 
 	inspect_filter filter(inspectionTime);
-	count += copy_and_inspect(filter, motorbikes);
-	count += copy_and_inspect(filter, private_cars);
-	count += copy_and_inspect(filter, handicapped_cars);
+	count += inspect(filter, motorbikes);
+	count += inspect(filter, private_cars);
+	count += inspect(filter, handicapped_cars);
 
 	ParkingLotPrinter::printInspectionResult(std::cout, inspectionTime, count);
 }
@@ -228,7 +214,7 @@ public:
 
 inline void copy_and_print(ostream& os, const UniqueArray<Vehicle, equal_to>& arr) {
 
-	UniqueArray<Vehicle, equal_to> copy = UniqueArray<Vehicle, equal_to>(arr);
+	UniqueArray<Vehicle, equal_to> copy(arr);
 	std::sort(copy.begin(), copy.end(), CompareVehiclePointers());
 	
 	for (Vehicle* vehicle : copy) {
