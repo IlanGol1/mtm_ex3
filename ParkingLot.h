@@ -18,9 +18,9 @@ namespace MtmParkingLot {
 	class ParkingLot {
 	public:
 
-		UniqueArray<Vehicle> motorbikes;
-		UniqueArray<Vehicle> private_cars;
-		UniqueArray<Vehicle> handicapped_cars;
+		UniqueArray<Vehicle, std::equal_to> motorbikes;
+		UniqueArray<Vehicle, std::equal_to> private_cars;
+		UniqueArray<Vehicle, std::equal_to> handicapped_cars;
 
 		ParkingLot(unsigned int parkingBlockSizes[]);
 		~ParkingLot();
