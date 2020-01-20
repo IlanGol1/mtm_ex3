@@ -7,7 +7,6 @@ ParkingLot::ParkingLot(unsigned int parkingBlockSizes[]):
 	motorbikes(parkingBlockSizes[0]),
 	private_cars(parkingBlockSizes[1]),
 	handicapped_cars(parkingBlockSizes[2]){
-
 }
 
 ParkingLot::~ParkingLot() {
