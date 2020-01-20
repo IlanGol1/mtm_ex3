@@ -126,7 +126,7 @@ ParkingResult ParkingLot::exitParking(LicensePlate licensePlate, Time exitTime) 
 		return VEHICLE_NOT_FOUND;
 	}
 	
-	unsigned int price = howMuchMoney(vehicle, exitTime);
+	unsigned int price = howMuchMoney(*vehicle, exitTime);
 	ParkingLotPrinter::printExitSuccess(std::cout, vehicle->getParkingSpot(), exitTime, price);
 
 	temp->remove(*vehicle);
@@ -194,7 +194,7 @@ public:
 
 inline unsigned int copy_and_inspect(inspect_filter& filter, UniqueArray<Vehicle, equal_to>& unique) {
 
-	UniqueArray<Vehicle, equal_to> copy = unique.filter((UniqueArray<Vehicle, equal_to>::Filter)filter);
+	UniqueArray<Vehicle, equal_to> copy = unique.filter(filter);
 	return copy.getCount();
 }
 
@@ -226,7 +226,7 @@ public:
 	};
 };
 
-inline void copy_and_print(ostream& os, UniqueArray<Vehicle, equal_to>& arr) {
+inline void copy_and_print(ostream& os, const UniqueArray<Vehicle, equal_to>& arr) {
 
 	UniqueArray<Vehicle, equal_to> copy = UniqueArray<Vehicle, equal_to>(arr);
 	std::sort(copy.begin(), copy.end(), CompareVehiclePointers());
