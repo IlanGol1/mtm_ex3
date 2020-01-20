@@ -1,6 +1,7 @@
 #include "ParkingLot.h"
 #include "UniqueArray.h"
 #include <map>
+#include <algorithm>
 
 using namespace MtmParkingLot;
 using namespace ParkingLotUtils;
@@ -212,31 +213,40 @@ void ParkingLot::inspectParkingLot(Time inspectionTime) {
 }
 
 //our array is sorted, but we're supposed to sort it. idk dude.
-class print_filter : UniqueArray<Vehicle, std::equal_to>::filter {
 
-	ostream& os;
+class CompareVehiclePointers {
 	
+	bool less (const Vehicle first, const Vehicle second) const{
+		return first.getParkingSpot() < second.getParkingSpot();
+	}
+
 public:
+	bool operator() (const Vehicle * first, const Vehicle * second)  const {
+		
+		if (second == NULL) return true;
+		else if (first == NULL) return false;
 
-	print_filter(ostream& ref) {
-
-		os = ref
-	}
-	virtual bool operator() (const Vehicle& vehicle) const {
-
-		os << vehicle;
-		ParkingLotPrinter::printParkingSpot(os, vehicle.getParkingSpot());
-		return true;
-	}
+		return less(*first, *second);
+	};
 };
+
+inline void copy_and_print(UniqueArray<Vehicle, std::equal_to>& arr) {
+
+	UniqueArray<Vehicle, std::equal_to> copy = UniqueArray<Vehicle, std::equal_to>(arr);
+	std::sort(copy.begin(), copy.end(), CompareVehiclePointers());
+	
+	for (Vehicle* vehicle : copy) {
+		if (!vehicle) break;
+		os << *vehicle;
+		ParkingLotPrinter::printParkingSpot(os, vehicle->getParkingSpot());
+	}
+}
 
 ostream& ParkingLot::operator<<(ostream& os, const ParkingLot& parkingLot) {
 
 	ParkingLotPrinter::printParkingLotTitle(os);
 
-	print_filter mfilter = print_filter(os);
-	
-	motorbikes.filter(mfilter);
-	handicapped_cars.filter(mfilter);
-	private_cars.filter(mfilter);
+	copy_and_print(motorbikes);
+	copy_and_print(handicapped_cars);
+	copy_and_print(private_cars);
 }

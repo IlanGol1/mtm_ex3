@@ -105,4 +105,13 @@ UniqueArray<Element,Compare> UniqueArray<Element,Compare>::filter(const Filter& 
     return filter_array;
 }
 
+template<class Element, class Compare>
+UniqueArray<Element, Compare>::iterator UniqueArray<Element, Compare>::begin() const {
+	return elements;
+}
+
+template<class Element, class Compare>
+UniqueArray<Element, Compare>::iterator UniqueArray<Element, Compare>::end() const {
+	return elements + len;
+}
 #endif
