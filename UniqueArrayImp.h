@@ -1,5 +1,5 @@
 #ifndef UNIQUE_ARRAY_IMP_H
-#def UNIQUE_ARRAY_IMP_H
+#define UNIQUE_ARRAY_IMP_H
 
 template <class Element, class Compare>
 UniqueArray<Element,Compare>::UniqueArray(unsigned int size) :
@@ -106,12 +106,14 @@ UniqueArray<Element,Compare> UniqueArray<Element,Compare>::filter(const Filter& 
 }
 
 template<class Element, class Compare>
-UniqueArray<Element, Compare>::iterator UniqueArray<Element, Compare>::begin() const {
+typename UniqueArray<Element, Compare>::iterator Itter;
+Itter UniqueArray<Element, Compare>::begin() const {
 	return elements;
 }
 
 template<class Element, class Compare>
-UniqueArray<Element, Compare>::iterator UniqueArray<Element, Compare>::end() const {
+typename UniqueArray<Element, Compare>::iterator Itter;
+Itter UniqueArray<Element, Compare>::end() const {
 	return elements + len;
 }
 #endif
