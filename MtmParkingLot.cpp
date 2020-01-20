@@ -50,9 +50,9 @@ static void handleInputError(istream& inputStream, string errorMsg) {
 }
 
 static VehicleType vehicleStrToVehicleType(string vehicleTypeStr) {
-    static map<string, VehicleType> vehicleTypes = { {"Motorbike", VehicleType::MOTORBIKE},
-                                                     {"Handicapped", VehicleType::HANDICAPPED}, 
-                                                     {"Car", VehicleType::CAR} };
+    static map<string, VehicleType> vehicleTypes = { {"Motorbike", MOTORBIKE},
+                                                     {"Handicapped", HANDICAPPED}, 
+                                                     {"Car", CAR} };
     return vehicleTypes.at(vehicleTypeStr);
 }
 
@@ -98,19 +98,35 @@ static void processInspectCmd(istream& inputStream, ParkingLot& parkingLot, Time
 
 static void processInput(istream& inputStream, ParkingLot& parkingLot, Time& currentTime) {
     typedef void (*CmdFunction)(istream&, ParkingLot&, Time&);
-    static map<string, CmdFunction> cmdMap = {{"ENTER", processEnterCmd},
-                                              {"EXIT", processExitCmd},
-                                              {"PRINT", processPrintCmd},
-                                              {"PASS_TIME", processPassCmd},
-                                              {"INSPECT", processInspectCmd}}; 
+    static map<string, CmdFunction> cmdMap = {{"ENTER", 0}, //processEnterCmd
+                                              {"EXIT", 1}, //processExitCmd
+                                              {"PRINT", 2}, //processPrintCmd
+                                              {"PASS_TIME", 3}, //processPassCmd
+                                              {"INSPECT", 4}}; //processInspectCmd 
     cout << "Enter commands:" << endl;
     string cmd;
     while (inputStream >> cmd) {
         try {
-            CmdFunction cmdFunc = cmdMap.at(cmd);
-            cmdFunc(inputStream, parkingLot, currentTime);
-            inputStream.clear();
-            inputStream.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			switch (cmdMap.at(cmd)) {
+				
+			case 0:
+				processEnterCmd(inputStream, parkingLot, currentTime);
+				break;
+			case 1:
+				processExitCmd(inputStream, parkingLot, currentTime);
+				break;
+			case 2:
+				processPrintCmd(inputStream, parkingLot, currentTime);
+				break;
+			case 3:
+				processPassCmd(inputStream, parkingLot, currentTime);
+				break;
+			case 4:
+				processInspectCmd(inputStream, parkingLot, currentTime);
+				break;
+			}
+			inputStream.clear();
+			inputStream.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         }
         catch (std::out_of_range& e) {
             handleInputError(inputStream, "unrecognized command!");
@@ -120,7 +136,7 @@ static void processInput(istream& inputStream, ParkingLot& parkingLot, Time& cur
 
 static void getParkingSizes(istream& inputStream, unsigned int parkingSizes[]) {
     int i = 0;
-    while( i < VehicleType::LAST - VehicleType::FIRST + 1) {
+    while( i < LAST - FIRST + 1) {
         VehicleType vehicleType = static_cast<VehicleType>(i);
         cout << "Enter parking size for " << vehicleTypeToString(vehicleType) << ":" << endl;
         int inputNum;
@@ -141,7 +157,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
     istream& inputStream = openInputStream(argc, argv);
-    unsigned int parkingSizes[VehicleType::LAST-VehicleType::FIRST+1];
+    unsigned int parkingSizes[LAST-FIRST+1];
     getParkingSizes(inputStream, parkingSizes);
     Time currentTime = Time();
     ParkingLot parkingLot(parkingSizes);
