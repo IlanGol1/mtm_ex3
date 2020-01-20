@@ -5,9 +5,9 @@ using namespace ParkingLotUtils;
 
 ParkingLot::ParkingLot(unsigned int parkingBlockSizes[]) {
 
-	motorobikes = UniqueArray<Vehicle, std::equal_to>(parkingBlockSizes[0]);
-	private_cars = UniqueArray<Vehicle, std::equal_to>(parkingBlockSizes[1]);
-	handicapped_cars = UniqueArray<Vehicle, std::equal_to>(parkingBlockSizes[2]);
+	motorobikes = UniqueArray<Vehicle, equal_to>(parkingBlockSizes[0]);
+	private_cars = UniqueArray<Vehicle, equal_to>(parkingBlockSizes[1]);
+	handicapped_cars = UniqueArray<Vehicle, equal_to>(parkingBlockSizes[2]);
 }
 
 ParkingLot::~ParkingLot() {
@@ -87,7 +87,7 @@ inline unsigned int max(unsigned int first, unsigned int second) {
 
 inline unsigned int howMuchMoney(VehicleType type, bool was_fined) {
 	
-	//I used a map because I don't like using enums like chars or ints. this is totally unnecessary however. (for my partner - they used maps at MtmParkingLot.cpp).
+	//I used a map because I don't like using enums like chars or ints. this is totally unnecessary however.
 	static take<VehicleType, int> = { {MOTORBIKE, 0}, {HANDICAPPED, 1}, {CAR, 2} }
 	static int[3] initial_pay = { 10, 15, 20 };
 	static int[3] extra_pay = { 5, 0, 10 }
@@ -174,7 +174,7 @@ ParkingResult ParkingLot::getParkingSpot(LicensePlate licensePlate, ParkingSpot&
 }
 
 
-class inspect_filter : UniqueArray<Vehicle, std::equal_to>::Filter {
+class inspect_filter : UniqueArray<Vehicle, equal_to>::Filter {
 	
 	Time inspection_t;
 
@@ -191,7 +191,7 @@ public:
 	}
 };
 
-inline unsigned int copy_and_inspect(inspect_filter& filter, UniqueArray<Vehicle, std::equal_to>& unique) {
+inline unsigned int copy_and_inspect(inspect_filter& filter, UniqueArray<Vehicle, equal_to>& unique) {
 
 	UniqueArray copy = unique.filter(filter);
 	return copy.getCount();
@@ -225,9 +225,9 @@ public:
 	};
 };
 
-inline void copy_and_print(UniqueArray<Vehicle, std::equal_to>& arr) {
+inline void copy_and_print(UniqueArray<Vehicle, equal_to>& arr) {
 
-	UniqueArray<Vehicle, std::equal_to> copy = UniqueArray<Vehicle, std::equal_to>(arr);
+	UniqueArray<Vehicle, equal_to> copy = UniqueArray<Vehicle, equal_to>(arr);
 	std::sort(copy.begin(), copy.end(), CompareVehiclePointers());
 	
 	for (Vehicle* vehicle : copy) {

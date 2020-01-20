@@ -12,15 +12,16 @@
 
 using namespace ParkingLotUtils;
 using std::ostream;
+typedef std::equal_to<Vehicle> equal_to;
 
 namespace MtmParkingLot {
 
 	class ParkingLot {
 	public:
 
-		UniqueArray<Vehicle, std::equal_to> motorbikes;
-		UniqueArray<Vehicle, std::equal_to> private_cars;
-		UniqueArray<Vehicle, std::equal_to> handicapped_cars;
+		UniqueArray<Vehicle, equal_to> motorbikes;
+		UniqueArray<Vehicle, equal_to> private_cars;
+		UniqueArray<Vehicle, equal_to> handicapped_cars;
 
 		ParkingLot(unsigned int parkingBlockSizes[]);
 		~ParkingLot();
