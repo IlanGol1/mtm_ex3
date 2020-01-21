@@ -1,7 +1,7 @@
 #include "CustomIterator.h"
 
 namespace CustomIterator {
-	CustomIterator(Element** arr, int size) : elements(arr),  len(size), index(0){
+	CustomIterator(Element** arr, int size) : elements(arr),  index(0), len(size){
 
 	}
 	Element*& operator[](unsigned int i) {
