@@ -32,7 +32,7 @@ public:
     class UniqueArrayIsFullException{
 	};
 
-
+	typedef Element** iterator;
 
 	iterator begin() const {
 		return elements;
