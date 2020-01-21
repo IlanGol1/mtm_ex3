@@ -12,10 +12,13 @@ public:
 	CustomIterator(Element** arr, int len);
 	friend bool operator<(const CustomIterator& first, const CustomIterator& second);
 	Element*& operator[](int i);
+	Element*& operator*();
 	void operator++();
 	void operator--();
 	void operator+=(int);
 	void operator-=(int);
+	friend bool operator==(const CustomIterator<Element>& first, const CustomIterator<Element>& second);
+	friend bool operator!=(const CustomIterator<Element>& first, const CustomIterator<Element>& second);
 };
 
 
