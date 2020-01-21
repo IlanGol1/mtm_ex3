@@ -6,8 +6,8 @@ namespace MtmParkingLot {
 	
 	ParkingLot::ParkingLot(unsigned int parkingBlockSizes[]) :
 		motorbikes(parkingBlockSizes[0]),
-		private_cars(parkingBlockSizes[1]),
-		handicapped_cars(parkingBlockSizes[2]) {
+		handicapped_cars(parkingBlockSizes[1]),
+		private_cars(parkingBlockSizes[2]) {
 	}
 
 	ParkingLot::~ParkingLot() {
@@ -179,7 +179,7 @@ namespace MtmParkingLot {
 		}
 
 	public:
-		bool operator() (const Vehicle* first, const Vehicle* second)  const {
+		bool operator() (const Vehicle* &first, const Vehicle* &second)  const {
 
 			if (second == NULL) return true;
 			else if (first == NULL) return false;
@@ -194,7 +194,7 @@ namespace MtmParkingLot {
 		std::sort(copy.begin(), copy.end(), CompareVehiclePointers());
 
 		for (Vehicle* vehicle : copy) {
-			if (!vehicle) break;
+			if (vehicle == NULL) break;
 			os << (*vehicle);
 			ParkingLotPrinter::printParkingSpot(os, vehicle->getParkingSpot());
 		}

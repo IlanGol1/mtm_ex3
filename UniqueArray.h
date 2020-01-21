@@ -1,3 +1,5 @@
+
+
 #ifndef MTMPARKINGLOT_UNIQUEARRAY_H
 #define MTMPARKINGLOT_UNIQUEARRAY_H
 
@@ -30,7 +32,7 @@ public:
     class UniqueArrayIsFullException{
 	};
 
-	typedef Element** iterator;
+
 
 	iterator begin() const {
 		return elements;
