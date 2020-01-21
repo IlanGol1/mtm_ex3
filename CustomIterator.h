@@ -1,3 +1,5 @@
+#include "CustomIteratorImp.h"
+
 #ifndef CUSTOM_ITERATOR_H
 #define CUSTOM_ITERATOR_H
 
@@ -17,13 +19,13 @@ public:
 	void operator+=(int);
 	void operator-=(int);
 
-	template<class Element>
+	template<class ElementC>
 	friend bool operator==(const CustomIterator<Element>& first, const CustomIterator<Element>& second);
 	
-	template<class Element>
+	template<class ElementC>
 	friend bool operator!=(const CustomIterator<Element>& first, const CustomIterator<Element>& second);
 	
-	template<class Element>
+	template<class ElementC>
 	friend bool operator<(const CustomIterator<Element>& first, const CustomIterator<Element>& second);
 };
 

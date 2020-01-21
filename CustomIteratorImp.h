@@ -1,6 +1,5 @@
-#include "CustomIterator.h"
-
 namespace CustomIterator {
+
 	template<class Element>
 	CustomIterator(Element** arr, int size) : elements(arr),  index(0), len(size){
 
@@ -41,20 +40,20 @@ namespace CustomIterator {
 	}
 }
 
-template<class Element>
-bool operator<(const CustomIterator<Element>& first, const CustomIterator<Element>& second) {
+template<class ElementC>
+bool operator<(const CustomIterator<ElementC>& first, const CustomIterator<ElementC>& second) {
 
 	return first.index < second.index;
 }
 
-template<class Element>
-bool operator==(const CustomIterator<Element>& first, const CustomIterator<Element>& second) {
+template<class ElementC>
+bool operator==(const CustomIterator<ElementC>& first, const CustomIterator<ElementC>& second) {
 
 	return first.index == second.index && first.elements == second.elements && first.len == second.len;
 }
 
-template<class Element>
-bool operator!=(const CustomIterator<Element>& first, const CustomIterator<Element>& second) {
+template<class ElementC>
+bool operator!=(const CustomIterator<ElementC>& first, const CustomIterator<ElementC>& second) {
 
 	return !(first.index == second.index && first.elements == second.elements && first.len == second.len);
 }
