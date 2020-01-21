@@ -10,15 +10,21 @@ class CustomIterator {
 	unsigned int len = 0;
 public:
 	CustomIterator(Element** arr, int len);
-	friend bool operator<(const CustomIterator<Element>& first, const CustomIterator<Element>& second);
 	Element*& operator[](int i);
 	Element*& operator*();
 	void operator++();
 	void operator--();
 	void operator+=(int);
 	void operator-=(int);
+
+	template<class Element>
 	friend bool operator==(const CustomIterator<Element>& first, const CustomIterator<Element>& second);
+	
+	template<class Element>
 	friend bool operator!=(const CustomIterator<Element>& first, const CustomIterator<Element>& second);
+	
+	template<class Element>
+	friend bool operator<(const CustomIterator<Element>& first, const CustomIterator<Element>& second);
 };
 
 
