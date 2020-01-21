@@ -199,7 +199,7 @@ inline ostream& copy_and_print(ostream& os, const UniqueArray<Vehicle, equal_to>
 	return os;
 }
 
-ostream& operator<<(ostream& os, const ParkingLot& parkingLot) {
+ostream& operator<<(ostream& os, ParkingLot const & parkingLot) {
 
 	ParkingLotPrinter::printParkingLotTitle(os);
 

@@ -29,7 +29,7 @@ namespace MtmParkingLot {
 		ParkingResult exitParking(LicensePlate licensePlate, Time exitTime);
 		ParkingResult getParkingSpot(LicensePlate licensePlate, ParkingSpot& parkingSpot) const;
 		void inspectParkingLot(Time inspectionTime);
-		friend ostream& operator<<(ostream& os, const ParkingLot& parkingLot);
+		friend ostream& operator<<(ostream& os, ParkingLot const& parkingLot);
 
 	};
 }
