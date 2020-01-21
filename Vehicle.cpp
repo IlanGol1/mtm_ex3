@@ -27,6 +27,11 @@ bool Vehicle::operator==(const Vehicle& vehicleB) const{
     return this->plate == vehicleB.plate;
 }
 
+ostream& Vehicle::operator<<(ostream& os) const {
+
+	ParkingLotPrinter::printVehicle(os, this->type, this->plate, this->entrance);
+}
+
 //it's a bit faulty but I haven't found a way around it, since we first need to initialize the Vehicle and then put it in the unique array and give it a spot.
 //so you can potentially assume that spot is empty to prevent any mistakes (not easy to do).
 //an option is to declare the insert functions as friends but that is too much and unnecessary.
@@ -52,6 +57,7 @@ bool Vehicle::fine(){
 	return true;
 }
 
+//it's double so it'll compile
 double Vehicle::timeParking(Time exit_time) const{
 	Time tmp = exit_time - entrance;
 	return tmp.toHours();

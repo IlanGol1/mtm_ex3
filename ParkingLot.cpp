@@ -133,31 +133,6 @@ ParkingResult ParkingLot::exitParking(LicensePlate licensePlate, Time exitTime) 
 	return SUCCESS;
 }
 
-//first:
-/*
-ParkingResult ParkingLot::getParkingSpot(LicensePlate licensePlate, ParkingSpot& parkingSpot) const {
-
-	unsigned int index = 0;
-	Vehicle dud = Vehicle(HANDICAPPED, licensePlate, Time());
-
-	if (motorbikes.getIndex(dud, index)) {
-		parkingSpot = ParkingSpot(MOTORBIKE, index);
-		return SUCCESS;
-	}
-	if (handicapped_cars.getIndex(dud, index)) {
-		parkingSpot = ParkingSpot(HANDICAPPED, index);
-		return SUCCESS;
-	}
-	if (private_cars.getIndex(dud, index) {
-		parkingSpot = ParkingSpot(CAR, index);
-		return SUCCESS;
-	}
-
-	return VEHICLE_NOT_FOUND;
-}
-*/
-//second
-
 ParkingResult ParkingLot::getParkingSpot(LicensePlate licensePlate, ParkingSpot& parkingSpot) const{
 
 	Vehicle dud = Vehicle(HANDICAPPED, licensePlate, Time());
@@ -218,7 +193,7 @@ inline ostream& copy_and_print(ostream& os, const UniqueArray<Vehicle, equal_to>
 	
 	for (Vehicle* vehicle : copy) {
 		if (!vehicle) break;
-		ParkingLotPrinter::printVehicle(os, vehicle);
+		os << (*vehicle);
 		ParkingLotPrinter::printParkingSpot(os, vehicle->getParkingSpot());
 	}
 	return os;
