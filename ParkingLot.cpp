@@ -3,8 +3,6 @@
 using namespace MtmParkingLot;
 using namespace ParkingLotUtils;
 
-using std::ostream;
-
 ParkingLot::ParkingLot(unsigned int parkingBlockSizes[]):
 	motorbikes(parkingBlockSizes[0]),
 	private_cars(parkingBlockSizes[1]),
@@ -205,9 +203,9 @@ ostream& MtmParkingLot::operator<<(ostream& os, const ParkingLot& parkingLot) {
 
 	ParkingLotPrinter::printParkingLotTitle(os);
 
-	os = copy_and_print(os, parkingLot.motorbikes);
-	os = copy_and_print(os, parkingLot.handicapped_cars);
-	os = copy_and_print(os, parkingLot.private_cars);
+	copy_and_print(os, parkingLot.motorbikes);
+	copy_and_print(os, parkingLot.handicapped_cars);
+	copy_and_print(os, parkingLot.private_cars);
 
 	return os;
 }
