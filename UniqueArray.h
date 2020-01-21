@@ -1,4 +1,4 @@
-
+#include "CustomIterator.h"
 
 #ifndef MTMPARKINGLOT_UNIQUEARRAY_H
 #define MTMPARKINGLOT_UNIQUEARRAY_H
@@ -6,7 +6,7 @@
 template <class Element, class Compare>
 class UniqueArray {
 
-	int len = 0;
+	unsigned int len = 0;
 	Compare cmp;
 	Element** elements;
 	
@@ -32,16 +32,17 @@ public:
     class UniqueArrayIsFullException{
 	};
 
-	typedef Element** iterator;
+	class CustomIterator<Element>;
 
-	iterator begin() const {
-		return elements;
+	CustomIterator<Element> begin() {
+
+		return CustomIterator<Element>(elements, len);
 	}
-	iterator end() const {
-		return elements + len;
+	CustomIterator<Element> end() {
+		
+		return CustomIterator<Element>(elements, len);
 	}
 };
-
 #include "UniqueArrayImp.h"
 
 

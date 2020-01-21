@@ -179,7 +179,7 @@ namespace MtmParkingLot {
 		}
 
 	public:
-		bool operator() (const Vehicle* &first, const Vehicle* &second)  const {
+		bool operator() (const Vehicle* first, const Vehicle* second)  const {
 
 			if (second == NULL) return true;
 			else if (first == NULL) return false;

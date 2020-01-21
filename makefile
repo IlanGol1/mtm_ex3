@@ -1,17 +1,18 @@
 FLAGS=-std=c++11 -Wall -Werror -pedantic-errors -DNDEBUG
 MtmFilesH=Time.h ParkingLotPrinter.h ParkingSpot.h ParkingLotTypes.h
 MtmFilesO=Time.o ParkingLotPrinter.o ParkingSpot.o
+UniqueArrayFiles=UniqueArray.h UniqueArrayImp.h CustomIterator.h CustomIteratorImp.h
 
 MtmParkingLot: MtmParkingLot.o ParkingLot.o Vehicle.o $(MtmFilesO)
 	g++ $(FLAGS) -o MtmParkingLot MtmParkingLot.o ParkingLot.o Vehicle.o $(MtmFilesO)
 
-UniqueArray: tests/UniqueArrayTest.cpp UniqueArray.h UniqueArrayImp.h
+UniqueArray: tests/UniqueArrayTest.cpp $(UniqueArrayFiles)
 	g++ $(FLAGS) -o UniqueArray tests/UniqueArrayTest.cpp
 
 MtmParkingLot.o: MtmParkingLot.cpp $(MtmFilesH)
 	g++ $(FLAGS) -c MtmParkingLot.cpp
 
-ParkingLot.o: ParkingLot.cpp ParkingLot.h $(MtmFilesH) UniqueArray.h UniqueArrayImp.h
+ParkingLot.o: ParkingLot.cpp ParkingLot.h $(MtmFilesH) $(UniqueArrayFiles)
 	g++ $(FLAGS) -c ParkingLot.cpp
 
 Vehicle.o: Vehicle.cpp Vehicle.h $(MtmFilesH)
