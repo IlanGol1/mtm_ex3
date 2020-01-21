@@ -27,18 +27,10 @@ public:
 	ParkingSpot getParkingSpot() const;
 	bool wasFined() const;
 	friend bool operator==(const Vehicle& vehicleA, const Vehicle& vehicleB);
-	friend ostream& operator<<(ostream& os, const Vehicle v);
+	friend ostream& operator<<(ostream& os, const Vehicle& v);
 
 private:
 	bool fine();
 };
-
-ostream& operator<<(ostream& os, const Vehicle v){
-	return ParkingLotPrinter::printVehicle(os, v.type, v.plate, v.entrance);
-}
-
-bool operator==(const Vehicle& vehicleA, const Vehicle& vehicleB){
-	return vehicleA.plate == vehicleB.plate;
-}
 
 #endif

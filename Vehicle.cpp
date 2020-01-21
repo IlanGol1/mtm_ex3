@@ -26,6 +26,15 @@ VehicleType Vehicle::typeOfVehicle() const{
 //it's a bit faulty but I haven't found a way around it, since we first need to initialize the Vehicle and then put it in the unique array and give it a spot.
 //so you can potentially assume that spot is empty to prevent any mistakes (not easy to do).
 //an option is to declare the insert functions as friends but that is too much and unnecessary.
+
+ostream& operator<<(ostream& os, const Vehicle& v) {
+	return ParkingLotPrinter::printVehicle(os, v.type, v.plate, v.entrance);
+}
+
+bool operator==(const Vehicle& vehicleA, const Vehicle& vehicleB) {
+	return vehicleA.plate == vehicleB.plate;
+}
+
 void Vehicle::setParkingSpot(ParkingSpot& p) {
 	
 	spot = ParkingSpot(p.getParkingBlock(), p.getParkingNumber());
