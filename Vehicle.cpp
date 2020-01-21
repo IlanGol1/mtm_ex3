@@ -27,10 +27,6 @@ bool Vehicle::operator==(const Vehicle& vehicleB) const{
     return this->plate == vehicleB.plate;
 }
 
-std::ostream& Vehicle::operator<<(std::ostream& os) const{
-	return ParkingLotUtils::ParkingLotPrinter::printVehicle(os, this->type, this->plate, this->entrance);
-}
-
 //it's a bit faulty but I haven't found a way around it, since we first need to initialize the Vehicle and then put it in the unique array and give it a spot.
 //so you can potentially assume that spot is empty to prevent any mistakes (not easy to do).
 //an option is to declare the insert functions as friends but that is too much and unnecessary.

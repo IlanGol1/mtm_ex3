@@ -25,9 +25,7 @@ public:
 	void setParkingSpot(ParkingSpot& p);
 	ParkingSpot getParkingSpot() const;
 	bool wasFined() const;
-
 	bool operator==(const Vehicle& vehicleB) const;
-	std::ostream& operator<<(std::ostream& os) const;
 
 private:
 	bool fine();

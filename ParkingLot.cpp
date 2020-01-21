@@ -211,16 +211,17 @@ public:
 	};
 };
 
-inline void copy_and_print(ostream& os, const UniqueArray<Vehicle, equal_to>& arr) {
+inline ostream& copy_and_print(ostream& os, const UniqueArray<Vehicle, equal_to>& arr) {
 
 	UniqueArray<Vehicle, equal_to> copy(arr);
 	std::sort(copy.begin(), copy.end(), CompareVehiclePointers());
 	
 	for (Vehicle* vehicle : copy) {
 		if (!vehicle) break;
-		os << *vehicle;
+		ParkingLotPrinter::printVehicle(os, vehicle);
 		ParkingLotPrinter::printParkingSpot(os, vehicle->getParkingSpot());
 	}
+	return os;
 }
 
 ostream& operator<<(ostream& os, const ParkingLot& parkingLot) {
