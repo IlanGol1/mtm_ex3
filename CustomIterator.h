@@ -2,7 +2,7 @@
 #define CUSTOM_ITERATOR_H
 
 //I think this prevents a "segmentation fault" error, so it's necessary/:
-template<Element>
+template<class Element>
 class CustomIterator {
 
 	Element** elements;
