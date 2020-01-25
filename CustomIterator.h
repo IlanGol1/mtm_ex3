@@ -12,10 +12,10 @@ class CustomIterator {
 	unsigned int len = 0;
 public:
 	CustomIterator(Element** arr, int len);
-	Element*& operator[](int i);
-	Element*& operator*();
-	void operator++();
-	void operator--();
+	Element*& operator[](const CustomIterator<Element>& iterator, int i);
+	Element*& operator*(const CustomIterator<Element>& iterator);
+	void operator++(const CustomIterator<Element>& iterator);
+	void operator--(const CustomIterator<Element>& iterator);
 	void operator+=(int);
 	void operator-=(int);
 

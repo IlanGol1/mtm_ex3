@@ -18,7 +18,8 @@ UniqueArray<Element,Compare>::UniqueArray(const UniqueArray& other) :
 {
     for(int i = 0; i < other.getSize(); i++) {
 		this->elements[i] = NULL;
-		if (other.elements[i]) this->elements[i] = new Element(*other.elements[i]);
+		if (other.elements[i]) this->elements[i] =
+		          new Element(*other.elements[i]);
     }
 }
 
@@ -45,7 +46,8 @@ unsigned int UniqueArray<Element,Compare>::insert(const Element& element) {
 }
 
 template <class Element, class Compare>
-bool UniqueArray<Element,Compare>::getIndex(const Element& element, unsigned int& index) const {
+bool UniqueArray<Element,Compare>::getIndex(const Element& element,
+                                            unsigned int& index) const {
     for (int i = 0; i < len ; ++i) {
         if (elements[i] && cmp(element , *elements[i])) {
             index = i;
@@ -56,7 +58,8 @@ bool UniqueArray<Element,Compare>::getIndex(const Element& element, unsigned int
 }
 
 template <class Element, class Compare>
-const Element* UniqueArray<Element,Compare>::operator[] (const Element& element) const {
+const Element* UniqueArray<Element,Compare>::operator[]
+                                                (const Element& element) const {
     unsigned int index = 0;
     if (!getIndex(element,index)) {
         return NULL;
@@ -95,7 +98,8 @@ unsigned int UniqueArray<Element,Compare>::getSize() const {
 }
 
 template <class Element, class Compare>
-UniqueArray<Element,Compare> UniqueArray<Element,Compare>::filter(const Filter& f) const {
+UniqueArray<Element,Compare>
+                UniqueArray<Element,Compare>::filter(const Filter& f) const {
     UniqueArray filter_array (*this);
     for (int i = 0; i < len; ++i) {
         if (elements[i] && !f(*elements[i])) {

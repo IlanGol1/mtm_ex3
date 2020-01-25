@@ -23,21 +23,22 @@ VehicleType Vehicle::typeOfVehicle() const{
     return type;
 }
 
-//it's a bit faulty but I haven't found a way around it, since we first need to initialize the Vehicle and then put it in the unique array and give it a spot.
-//so you can potentially assume that spot is empty to prevent any mistakes (not easy to do).
-//an option is to declare the insert functions as friends but that is too much and unnecessary.
-
-ostream& operator<<(ostream& os, const Vehicle& v) {
-	return ParkingLotPrinter::printVehicle(os, v.type, v.plate, v.entrance);
+ostream& operator<<(ostream& os, const Vehicle& vehicle) {
+	return ParkingLotPrinter::printVehicle(os,
+		    						    	vehicle.type,
+		    						    	vehicle.plate,
+		    						    	vehicle.entrance);
 }
 
 bool operator==(const Vehicle& vehicleA, const Vehicle& vehicleB) {
 	return vehicleA.plate == vehicleB.plate;
 }
 
-void Vehicle::setParkingSpot(ParkingSpot& p) {
+
+void Vehicle::setParkingSpot(ParkingSpot& parkings_spot) {
 	
-	spot = ParkingSpot(p.getParkingBlock(), p.getParkingNumber());
+	spot = ParkingSpot(parkings_spot.getParkingBlock(),
+		 				parkings_spot.getParkingNumber());
 }
 
 ParkingSpot Vehicle::getParkingSpot() const {
@@ -48,7 +49,6 @@ bool Vehicle::wasFined() const{
 	return was_fined;
 }
 
-//returns true upon a successful fine
 bool Vehicle::fine(){
 	if (was_fined) {
 		return false;
@@ -57,8 +57,7 @@ bool Vehicle::fine(){
 	return true;
 }
 
-//it's double so it'll compile
-double Vehicle::timeParking(Time exit_time) const{
+Time::Hour Vehicle::timeParking(Time exit_time) const{
 	Time tmp = exit_time - entrance;
 	return tmp.toHours();
 }

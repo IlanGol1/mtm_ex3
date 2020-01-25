@@ -1,16 +1,15 @@
-namespace CustomIterator {
+#ifndef CUSTOMITERATORIMP_H
+#define CUSTOMITERATORIMP_H
 
-	template<class Element>
-	CustomIterator(Element** arr, int size) : elements(arr),  index(0), len(size){
+template<Element>
+CustomIterator<Element>::CustomIterator<Element>(Element** arr, int size) : elements(arr),  index(0), len(size){
+}
 
-	}
+Element*& operator[](unsigned int i) {
 
-	template<class Element>
-	Element*& operator[](unsigned int i) {
-
-		if (i >= len - index || i + index < 0) throw std::out_of_range;
-		return arr[i + index];
-	}
+	if (i >= len - index || i + index < 0) throw std::out_of_range;
+	return arr[i + index];
+}
 	
 	template<class Element>
 	Element*& operator*() {
@@ -38,7 +37,7 @@ namespace CustomIterator {
 	void operator-=(int i) {
 		index -= i;
 	}
-}
+
 
 template<class ElementC>
 bool operator<(const CustomIterator<ElementC>& first, const CustomIterator<ElementC>& second) {
@@ -57,3 +56,5 @@ bool operator!=(const CustomIterator<ElementC>& first, const CustomIterator<Elem
 
 	return !(first.index == second.index && first.elements == second.elements && first.len == second.len);
 }
+
+#endif
